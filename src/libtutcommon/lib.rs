@@ -3,8 +3,6 @@
 #![deny(non_snake_case)]
 #![deny(non_upper_case_globals)]
 
-#![feature(std_misc)]
-
 #![doc = "Common stuff for tutorials."]
 #![crate_name = "tutcommon"]
 
@@ -19,6 +17,8 @@ use std::path::Path;
 use std::ffi::OsStr;
 
 pub mod glutils;
+
+static TO_RADIANS : f32 = std::f32::consts::PI / 180.0;
 
 #[doc = "Load BMP into surface."]
 pub fn load_bmp<S: AsRef<OsStr> + ?Sized>(s: &S) -> sdl2::surface::Surface {
@@ -70,7 +70,7 @@ impl Matrix4f {
     pub fn perspective(fov: f32, aspect: f32, znear: f32, zfar: f32) -> Matrix4f {
         let mut res : Matrix4f = Default::default();
 
-        let f = 1.0 / (fov / 2.0 ).to_radians().tan();
+        let f = 1.0 / (fov * TO_RADIANS / 2.0 ).tan();
 
         res.data[0][0] = f / aspect;
         res.data[1][1] = f;
@@ -151,13 +151,13 @@ impl Matrix4f {
     pub fn rotate(angle:f32, axis:Vector3f) -> Matrix4f {
         let mut res : Matrix4f = Default::default();
 
-        let a = (angle / 2.0).to_radians().sin();
+        let a = (angle * TO_RADIANS / 2.0).sin();
         let vn = axis.normalize();
 
         let x = vn.0 * a;
         let y = vn.1 * a;
         let z = vn.2 * a;
-        let w = (angle / 2.0).to_radians().cos();
+        let w = (angle * TO_RADIANS / 2.0).cos();
 
         let x2 = x * x;
         let y2 = y * y;
