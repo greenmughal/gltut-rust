@@ -9,6 +9,8 @@
 // Include SDL2 library.
 extern crate sdl2;
 
+extern crate byteorder;
+
 extern crate gl;
 
 use std::default::Default;
